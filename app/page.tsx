@@ -67,34 +67,36 @@ export default function Home() {
     e.preventDefault();
     setIsSubmitting(true);
     setError(null);
-
+  
     try {
       // Validate phone number
       const phoneRegex = /^\+?[\d\s-]{10,}$/;
       if (!phoneRegex.test(formData.phone)) {
         throw new Error("Please enter a valid phone number");
       }
-
-      // Include the prediction result in the form data
-      const submissionData = {
-        ...formData,
-        hasFungus, // Boolean value
-        image: selectedImage, // Optionally include the image data
+  
+      // Prepare JSON payload
+      const payload = {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        symptoms: formData.symptoms,
+        hasFungus: hasFungus ? "true" : "false",
       };
-
-      // Send the form data to your backend
-      const response = await fetch("/api/submit-form", {
+  
+      // Send the form data as JSON
+      const response = await fetch("/api/send-email", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(submissionData),
+        body: JSON.stringify(payload),
       });
-
+  
       if (!response.ok) {
         throw new Error("Failed to submit form");
       }
-
+  
       alert("Form submitted successfully!");
       setFormData({ name: "", email: "", phone: "", symptoms: "" });
       setSelectedImage(null);
@@ -105,6 +107,7 @@ export default function Home() {
       setIsSubmitting(false);
     }
   };
+  
 
   const handleLogout = () => {
     document.cookie =

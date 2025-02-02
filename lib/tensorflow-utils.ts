@@ -8,7 +8,7 @@ export async function detectFungus(imageData: string): Promise<{ hasFungus: bool
     formData.append('file', blob, 'image.jpg');
 
     // Send the image to the Flask API
-    const response = await fetch('https://4b01-34-16-133-89.ngrok-free.app/predict', {
+    const response = await fetch('https://ee6f-35-236-203-126.ngrok-free.app/predict', {
       method: 'POST',
       body: formData,
     });
